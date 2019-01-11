@@ -1,0 +1,27 @@
+version: '3'
+volumes:
+  db_data: {}
+services:
+    db:
+      image: mysql:5.7
+      command: --explicit-defaults-for-timestamp=ON
+      volumes:
+        - ./mysql:/etc/mysql/conf.d
+        - ./db-data:/var/lib/mysql
+      environment:
+        MYSQL_DATABASE: magento
+        MYSQL_USER: site
+        MYSQL_PASSWORD: secret000
+        MYSQL_ROOT_PASSWORD: secret000
+      ports:
+        - 3306:3306
+    web:
+      environment:
+        VIRTUAL_HOST: magento.local
+      image: bradigital/minelab:latest
+      volumes:
+        - ./www:/var/www/html
+      ports:
+        - 80:80
+      links:
+         - db
