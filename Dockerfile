@@ -9,6 +9,7 @@ ENV XDEBUG_PORT 9000
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     software-properties-common \
+    apt-utils \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libfreetype6-dev \
@@ -34,12 +35,20 @@ RUN apt-get update \
     bash-completion \
     && apt-get clean
 
-RUN pecl install mcrypt \
+#install mcrypt
+
+RUN pecl install mcrypt-1.0.2 \
     && docker-php-ext-enable mcrypt
 
+#configure gd
+
 RUN docker-php-ext-configure \
-    gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/; \
-    docker-php-ext-install \
+    gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/;
+
+#install php exts
+
+RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install \
     opcache \
     bz2 \
     curl \
@@ -47,10 +56,9 @@ RUN docker-php-ext-configure \
     bcmath \
     imap \
     intl \
-    mbstring \ 
+    mbstring \
     mysqli \ 
-    pdo \  
-    pdo_mysql \
+    pdo \ 
     soap \
     simplexml \
     xml \
@@ -104,8 +112,10 @@ RUN docker-php-ext-configure \
     tidy \
     tokenizer \
     wddx
-# zend_test
-    RUN chmod 777 -Rf /var/www /var/www/.* \
+
+#configure www
+
+RUN chmod 777 -Rf /var/www /var/www/.* \
     && chown -Rf www-data:www-data /var/www /var/www/.* \
     && usermod -u 1000 www-data \
     && chsh -s /bin/bash www-data\
