@@ -1,6 +1,6 @@
 FROM php:7.3-apache
 
-MAINTAINER Rogerio <rogerio.lamarques@gmail.com>
+LABEL maintainer="Rogerio Lamarques<rogerio.lamarques@gmail.com>"
 
 ENV XDEBUG_PORT 9000
 
@@ -59,3 +59,5 @@ RUN docker-php-ext-configure \
 
 VOLUME /var/www/html
 WORKDIR /var/www/html
+
+EXPOSE 80 443
