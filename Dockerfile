@@ -7,13 +7,15 @@ ENV XDEBUG_PORT 9000
 # Install System Dependencies
 
 RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    && apt-get upgrade -y \
+    && apt-get install -y \
     software-properties-common \
     apt-utils \
     && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    && apt install -y \
     libfreetype6-dev \
     libicu-dev \
+    bzip2 \
     libssl-dev \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
@@ -40,6 +42,11 @@ RUN apt-get update \
 RUN pecl install mcrypt-1.0.2 \
     && docker-php-ext-enable mcrypt
 
+#install mcrypt
+
+RUN pecl install bz2 \
+    && docker-php-ext-enable mcrypt
+
 #configure gd
 
 RUN docker-php-ext-configure \
@@ -48,70 +55,50 @@ RUN docker-php-ext-configure \
 #install php exts
 
 RUN docker-php-ext-install pdo pdo_mysql
-RUN docker-php-ext-install \
-    opcache \
-    bz2 \
-    curl \
-    gd \
-    bcmath \
-    imap \
-    intl \
-    mbstring \
-    mysqli \ 
-    pdo \ 
-    soap \
-    simplexml \
-    xml \
-    xmlreader \
-    xmlrpc \
-    xmlwriter \
-    xsl \
-    xsl \
-    zip \
-    calendar \
-    ctype \
-    dba \
-    dom \
-    enchant \
-    exif \
-    fileinfo \
-    filter \
-    ftp \
-    gettext \
-    gmp \
-    hash \
-    iconv \
-    imap \
-    interbase \
-    json \
-    ldap \
-    odbc \
-    pcntl \
-    pdo_dblib \
-    pdo_firebird \
-    pdo_odbc \
-    pdo_pgsql \
-    pdo_sqlite \
-    pgsql \
-    phar \
-    posix \
-    pspell \
-    readline \
-    recode \
-    reflection \
-    session \
-    shmop \
-    snmp \
-    sockets \
-    sodium \
-    spl \
-    standard \
-    sysvmsg \
-    sysvsem \
-    sysvshm \
-    tidy \
-    tokenizer \
-    wddx
+RUN docker-php-ext-install opcache
+#RUN docker-php-ext-install bz2
+RUN docker-php-ext-install curl
+RUN docker-php-ext-install gd
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install imap
+RUN docker-php-ext-install intl
+RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install soap
+RUN docker-php-ext-install simplexml
+RUN docker-php-ext-install xml
+RUN docker-php-ext-install xmlreader
+RUN docker-php-ext-install xmlrpc
+RUN docker-php-ext-install xmlwriter
+RUN docker-php-ext-install xsl
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install calendar
+RUN docker-php-ext-install ctype
+RUN docker-php-ext-install dba
+RUN docker-php-ext-install dom
+RUN docker-php-ext-install enchant
+RUN docker-php-ext-install exif fileinfo
+RUN docker-php-ext-install filter
+RUN docker-php-ext-install ftp
+RUN docker-php-ext-install gettext
+RUN docker-php-ext-install gmp
+RUN docker-php-ext-install hash
+RUN docker-php-ext-install iconv imap
+RUN docker-php-ext-install interbase pdo_firebird
+RUN docker-php-ext-install json tokenizer
+RUN docker-php-ext-install ldap
+RUN docker-php-ext-install odbc pdo_odbc
+RUN docker-php-ext-install pcntl
+RUN docker-php-ext-install pdo_dblib  pdo_sqlite
+RUN docker-php-ext-install pgsql pdo_pgsql
+RUN docker-php-ext-install phar posix pspell
+RUN docker-php-ext-install readline recode reflection
+RUN docker-php-ext-install session sockets
+RUN docker-php-ext-install spl wddx
+RUN docker-php-ext-install shmop snmp
+RUN docker-php-ext-install sodium standard
+RUN docker-php-ext-install sysvmsg sysvsem sysvshm
+RUN docker-php-ext-install tidy     
 
 #configure www
 
